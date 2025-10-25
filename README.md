@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Quest For Job
 
-## Getting Started
+## 실행 방법
 
-First, run the development server:
+1. 의존성 설치
+
+```bash
+npm i
+```
+
+2. 환경변수 생성(`.env.local`)
+
+```
+NEXT_PUBLIC_API_BASE_URL=https://fe-hiring-rest-api.vercel.app
+```
+
+3. 개발 서버 실행
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- 기본 포트: 3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 기술 스택
+- Next.js(App Router), React 19, TypeScript
+- 데이터 패칭: @tanstack/react-query
+- HTTP: axios
+- 폼/검증: react-hook-form + zod
+- 차트: recharts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 라우팅
+- `/login`
+- `/posts` (목록 + 검색/정렬/필터/커서 페이징)
+- `/posts/new` (작성)
+- `/posts/:id` (상세)
+- `/posts/:id/edit` (수정)
+- `/charts` (데이터 시각화)
 
-## Learn More
+## 구현 요약 (요구사항 매핑)
+- 인증
+  - `/auth/login` 연동, `accessToken` localStorage 저장, 가드/로그아웃 구현
+- 게시판
+  - 목록: `/posts` 커서 페이징, 검색/정렬(title|createdAt asc/desc)/카테고리 필터(ALL 포함)
+  - 상세: `/posts/{id}` 조회, 수정/삭제 제공
+  - 작성: `POST /posts`, 수정: `PATCH /posts/{id}`, 삭제: `DELETE /posts/{id}`
+  - 금칙어(캄보디아/프놈펜/불법체류/텔레그램) 사전차단, 제목≤80/본문≤2000/태그≤5(중복 제거, 각 ≤24)
+  - 로딩/에러 메시지, 성공 시 라우팅 및 캐시 무효화
+- 시각화
+  - `/mock/top-coffee-brands`: 바 차트, 도넛(Pie) 차트 + 범례/툴팁
+  - `/mock/weekly-mood-trend`: 스택형 바/스택형 면적, X: week, Y: %
+  - `/mock/coffee-consumption`: 멀티라인(좌Y: bugs, 우Y: productivity), 팀별 동일색/실선/점선, 범례/툴팁
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 한계/개선점
+- 서버 렌더링 구간에서 토큰 접근 제한으로 가드는 클라이언트에서 동작
+- 디자인은 심플한 기본 스타일, 필요 시 컴포넌트화/디자인 시스템 도입 가능

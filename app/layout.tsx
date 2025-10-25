@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Providers from "./providers";
+import Link from "next/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,10 +26,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        {/* 글로벌 네비게이션: 주요 페이지로 바로 이동 */}
+        <header className="border-b bg-background/50">
+          <nav className="mx-auto flex max-w-5xl items-center gap-4 px-4 py-3 text-sm">
+            <Link href="/">Home</Link>
+            <Link href="/login">Login</Link>
+            <Link href="/posts">Posts</Link>
+            <Link href="/charts">Charts</Link>
+          </nav>
+        </header>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
