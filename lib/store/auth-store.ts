@@ -29,8 +29,7 @@ export const useAuthStore = create<AuthState>()(
     {
       name: "auth",
       storage: createJSONStorage(() => localStorage),
-      onRehydrateStorage: () => (state, error) => {
-        // mark hydration complete regardless of success
+      onRehydrateStorage: () => (state, _error) => {
         if (state) state.setHasHydrated(true);
       },
       partialize: (s) => ({ token: s.token, user: s.user }),
@@ -38,5 +37,4 @@ export const useAuthStore = create<AuthState>()(
   )
 );
 
-// Non-hook getter for non-React contexts (e.g., axios interceptors)
 export const getAuthState = () => useAuthStore.getState();

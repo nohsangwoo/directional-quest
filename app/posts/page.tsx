@@ -7,6 +7,17 @@ import AuthGuard from "../(routes)/guard";
 
 const categories = ["ALL", "NOTICE", "QNA", "FREE"] as const;
 
+type SortField = "createdAt" | "title";
+
+type PostsQueryParams = {
+  search?: string;
+  sort?: SortField;
+  order?: "asc" | "desc";
+  category?: "NOTICE" | "QNA" | "FREE";
+  nextCursor?: string;
+  prevCursor?: string;
+};
+
 interface Post {
   id: string;
   userId: string;
@@ -25,7 +36,7 @@ interface PostsResponse {
 
 export default function PostsPage() {
   const [search, setSearch] = useState("");
-  const [sortBy, setSortBy] = useState<"title" | "createdAt">("createdAt");
+  const [sortBy, setSortBy] = useState<SortField>("createdAt");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [category, setCategory] = useState<(typeof categories)[number]>("ALL");
   const [cursor, setCursor] = useState<string | undefined>(undefined);
@@ -37,11 +48,11 @@ export default function PostsPage() {
       { search, sortBy, sortOrder, category, cursor, cursorParam },
     ],
     queryFn: async () => {
-      const params: Record<string, any> = {
+      const params: PostsQueryParams = {
         search: search || undefined,
-        sort: sortBy, // Swagger: sort
-        order: sortOrder, // Swagger: order
-        category: category === "ALL" ? undefined : category,
+        sort: sortBy,
+        order: sortOrder,
+        category: category === "ALL" ? undefined : (category as "NOTICE" | "QNA" | "FREE"),
       };
       if (cursor && cursorParam === "next") params.nextCursor = cursor;
       if (cursor && cursorParam === "prev") params.prevCursor = cursor;
@@ -51,14 +62,13 @@ export default function PostsPage() {
     staleTime: 10_000,
   });
 
-  const onToggleSort = (key: "title" | "createdAt") => {
+  const onToggleSort = (key: SortField) => {
     if (sortBy !== key) {
       setSortBy(key);
       setSortOrder("desc");
     } else {
       setSortOrder((p) => (p === "asc" ? "desc" : "asc"));
     }
-    // 정렬 변경 시 커서 초기화
     setCursor(undefined);
     setCursorParam(undefined);
   };
