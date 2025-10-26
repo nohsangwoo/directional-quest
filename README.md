@@ -8,21 +8,21 @@
 npm i
 ```
 
-2. 환경변수 생성(`.env.local`)
+2. 배포링크
+   https://directional-quest.vercel.app/
 
-```
-NEXT_PUBLIC_API_BASE_URL=https://fe-hiring-rest-api.vercel.app
-```
+````
 
 3. 개발 서버 실행
 
 ```bash
 npm run dev
-```
+````
 
 - 기본 포트: 3000
 
 ## 기술 스택
+
 - Next.js(App Router), React 19, TypeScript
 - 데이터 패칭: @tanstack/react-query
 - HTTP: axios
@@ -30,6 +30,7 @@ npm run dev
 - 차트: recharts
 
 ## 라우팅
+
 - `/login`
 - `/posts` (목록 + 검색/정렬/필터/커서 페이징)
 - `/posts/new` (작성)
@@ -38,6 +39,7 @@ npm run dev
 - `/charts` (데이터 시각화)
 
 ## 구현 요약 (요구사항 매핑)
+
 - 인증
   - `/auth/login` 연동, `accessToken` localStorage 저장, 가드/로그아웃 구현
 - 게시판
@@ -52,5 +54,6 @@ npm run dev
   - `/mock/coffee-consumption`: 멀티라인(좌Y: bugs, 우Y: productivity), 팀별 동일색/실선/점선, 범례/툴팁
 
 ## 한계/개선점
+
 - 서버 렌더링 구간에서 토큰 접근 제한으로 가드는 클라이언트에서 동작
 - 디자인은 심플한 기본 스타일, 필요 시 컴포넌트화/디자인 시스템 도입 가능
