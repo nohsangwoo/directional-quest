@@ -1,18 +1,18 @@
-"use client";
-import Link from "next/link";
-import { ReactNode } from "react";
-import { useRouter } from "next/navigation";
-import { useAuthStore } from "@/lib/store/auth-store";
+'use client'
+import Link from 'next/link'
+import { ReactNode } from 'react'
+import { useRouter } from 'next/navigation'
+import { useAuthStore } from '@/lib/store/auth-store'
 
 export default function PostsLayout({ children }: { children: ReactNode }) {
-  const router = useRouter();
-  const clearAuth = useAuthStore((s) => s.clearAuth);
-  const user = useAuthStore((s) => s.user);
+  const router = useRouter()
+  const clearAuth = useAuthStore(s => s.clearAuth)
+  const user = useAuthStore(s => s.user)
 
   const onLogout = () => {
-    clearAuth();
-    router.replace("/login");
-  };
+    clearAuth()
+    router.replace('/login')
+  }
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-6">
@@ -31,5 +31,5 @@ export default function PostsLayout({ children }: { children: ReactNode }) {
       </nav>
       {children}
     </div>
-  );
+  )
 }
